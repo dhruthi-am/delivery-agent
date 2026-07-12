@@ -12,8 +12,17 @@ client = Client(
 call = client.calls.create(
     to="+919483683335",   # Your verified mobile
     from_=os.getenv("TWILIO_PHONE_NUMBER"),
-    url="https://prankster-freezing-boundless.ngrok-free.dev/voice"
+
+    # TwiML webhook
+    url="https://prankster-freezing-boundless.ngrok-free.dev/voice",
+
+    # Status callback webhook
+    status_callback="https://prankster-freezing-boundless.ngrok-free.dev/call-status",
+    status_callback_method="POST",
+
+    # Trigger callback when the call completes
+    status_callback_event=["completed"]
 )
 
 print("Calling...")
-print(call.sid)
+print("Call SID:", call.sid)

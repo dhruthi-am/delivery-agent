@@ -10,7 +10,6 @@ def generate_summary(conversation):
     instruction = conversation["instruction"]
     messages = conversation["messages"]
 
-    # Build conversation history
     conversation_text = ""
 
     for message in messages:
@@ -50,9 +49,40 @@ Requirements
 - Generate only the WhatsApp message.
 """
 
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt
-    )
+    try:
 
-    return response.text
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt
+        )
+
+        return response.text
+
+    except Exception as e:
+
+        print("=" * 50)
+        print("SUMMARY GENERATION FAILED")
+        print(e)
+        print("Using fallback summary.")
+        print("=" * 50)
+
+        # Fallback summary
+        if status == "Verified":
+
+            if instruction:
+                return (
+                    f"Hi {customer},\n\n"
+                    f"Your {platform} order has been verified.\n"
+                    f"Delivery instruction: {instruction}"
+                )
+
+            return (
+                f"Hi {customer},\n\n"
+                f"Your {platform} order has been verified."
+            )
+
+        return (
+            f"Hi {customer},\n\n"
+            f"We could not complete verification for your {platform} order. "
+            f"Please contact the delivery executive if further assistance is required."
+        )

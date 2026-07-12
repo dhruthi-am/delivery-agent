@@ -1,13 +1,13 @@
 orders = [
     {
-        "customer": "Dhruthi",
+        "customer": "Dhruv",
         "platform": "Amazon",
         "phone": "+919483683335",
         "payment": "Prepaid",
         "instruction": "Place the parcel on the window beside the main door."
     },
     {
-        "customer": "Dhruthi",
+        "customer": "Dhruv",
         "platform": "Flipkart",
         "phone": "+919483683335",
         "payment": "COD",

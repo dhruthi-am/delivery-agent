@@ -74,13 +74,12 @@ async def voice(request: Request):
 async def process_speech(request: Request):
 
     try:
-
         form = await request.form()
 
-        print("=" * 60)
+        print("=" * 50)
         print("FORM DATA")
         print(dict(form))
-        print("=" * 60)
+        print("=" * 50)
 
         speech = form.get("SpeechResult")
 
@@ -91,7 +90,9 @@ async def process_speech(request: Request):
 
         print("Speech:", speech)
         print("Call SID:", call_sid)
+        print("=" * 50)
 
+        # Process conversation
         result = handle_delivery_call(
             conversation_id=call_sid,
             message=speech
@@ -119,16 +120,26 @@ async def process_speech(request: Request):
 
     except Exception as e:
 
-        import traceback
-
-        print("=" * 60)
+        print("=" * 50)
         print("PROCESS SPEECH ERROR")
+        import traceback
         traceback.print_exc()
-        print("=" * 60)
+        print("=" * 50)
 
         response = VoiceResponse()
-        response.say("Sorry. An internal error occurred.")
-        response.hangup()
+
+        gather = Gather(
+            input="speech",
+            action="/process-speech",
+            method="POST",
+            speech_timeout="auto"
+        )
+
+        gather.say(
+            "I'm sorry. Our AI service is temporarily unavailable. Please repeat your last message in a few seconds."
+        )
+
+        response.append(gather)
 
         return Response(
             content=str(response),

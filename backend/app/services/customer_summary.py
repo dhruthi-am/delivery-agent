@@ -30,6 +30,8 @@ def end_delivery_call(conversation_id: str):
     # Generate summary
     try:
         summary = generate_summary(conversation)
+        print("Generated Summary:")
+        print(summary)
 
     except Exception as e:
         return {
@@ -52,11 +54,20 @@ def end_delivery_call(conversation_id: str):
             "status": "Phone Number Missing",
             "summary": conversation["summary"]
         }
-
+    print("=" * 50)
+    print("Sending WhatsApp...")
+    print("Phone:", phone)
+    print("Summary:", conversation["summary"])
+    print("=" * 50)
     whatsapp_result = send_whatsapp_message(
         phone,
         conversation["summary"]
     )
+
+    print("=" * 50)
+    print("WHATSAPP RESULT")
+    print(whatsapp_result)
+    print("=" * 50)
 
     result = {
         "status": "Call Ended",
